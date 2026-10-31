@@ -1,0 +1,59 @@
+<nav title-text="护理好物" />
+
+<view class="shop">
+  <!-- 个性化推荐头部 -->
+  <view class="personal">
+    <view class="personal__icon">
+      <t-icon name="heart" size="48rpx" color="#fff" />
+    </view>
+    <view class="personal__content">
+      <view class="personal__title">为您精选</view>
+      <view class="personal__tip">{{personalTip}}</view>
+    </view>
+    <view class="personal__score" wx:if="{{healthScore !== null}}">{{healthScore}}<text>分</text></view>
+  </view>
+
+  <!-- 分类切换 -->
+  <scroll-view class="tabs" scroll-x enable-flex>
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tabs__item {{activeTab === item.key ? 'tabs__item--active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onSwitchTab"
+    >{{item.label}}</view>
+  </scroll-view>
+
+  <!-- 商品列表 -->
+  <view class="list">
+    <view wx:if="{{loading}}" class="loading">
+      <t-loading theme="circular" size="48rpx" />
+    </view>
+
+    <block wx:elif="{{filteredProducts.length}}">
+      <view class="product" wx:for="{{filteredProducts}}" wx:key="id">
+        <view class="product__cover">
+          <image wx:if="{{item.cover_image}}" src="{{item.cover_image}}" mode="aspectFill" class="product__img" />
+          <t-icon wx:else name="image" size="56rpx" color="#c5ccd9" />
+        </view>
+        <view class="product__body">
+          <view class="product__name">{{item.title}}</view>
+          <view class="product__desc">{{item.description || item.meta.desc}}</view>
+          <view class="product__foot">
+            <view class="product__price">{{item.price || '查看详情'}}</view>
+            <view class="product__btn" data-code="{{item.taobao_code}}" data-url="{{item.taobao_url}}" bindtap="onBuy">
+              去购买
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="empty">
+      <t-icon name="shop" size="96rpx" color="#d5dbe6" />
+      <view class="empty__text">暂无推荐商品</view>
+    </view>
+  </view>
+
+  <view class="foot-tip">商品由平台精选，购买请打开淘宝 App</view>
+</view>

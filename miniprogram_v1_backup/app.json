@@ -1,0 +1,26 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/camera/camera",
+    "pages/report/report",
+    "pages/history/history",
+    "pages/products/products"
+  ],
+  "window": {
+    "navigationBarTitleText": "口腔AI检测",
+    "navigationBarBackgroundColor": "#2f6df6",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f6f8"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#2f6df6",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/history/history", "text": "记录" },
+      { "pagePath": "pages/products/products", "text": "好物" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

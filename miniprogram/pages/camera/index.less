@@ -1,0 +1,157 @@
+.camera-page {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  background: #000;
+
+  &__camera,
+  &__preview {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__preview {
+    background: #000;
+  }
+}
+
+/* 取景引导框 */
+.guide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__box {
+    width: 520rpx;
+    height: 520rpx;
+    border: 3rpx solid rgba(255, 255, 255, 0.85);
+    border-radius: 32rpx;
+    box-shadow: 0 0 0 9999rpx rgba(0, 0, 0, 0.35);
+  }
+
+  &__tip {
+    position: absolute;
+    bottom: 60rpx;
+    color: #fff;
+    font-size: 26rpx;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 12rpx 28rpx;
+    border-radius: 30rpx;
+  }
+}
+
+/* 控制面板 */
+.panel {
+  background: #fff;
+  padding: 32rpx 40rpx;
+
+  &__label {
+    font-size: 26rpx;
+    color: #888;
+    margin-bottom: 16rpx;
+  }
+}
+
+.seg {
+  display: flex;
+  background: #f5f6f8;
+  border-radius: 16rpx;
+  padding: 6rpx;
+
+  &__item {
+    flex: 1;
+    height: 76rpx;
+    line-height: 76rpx;
+    text-align: center;
+    font-size: 28rpx;
+    color: #666;
+    border-radius: 12rpx;
+
+    &--active {
+      background: #fff;
+      color: #0052d9;
+      font-weight: 600;
+      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+.tooth-input {
+  height: 88rpx;
+  background: #f5f6f8;
+  border-radius: 16rpx;
+  padding: 0 28rpx;
+  font-size: 30rpx;
+}
+
+/* 操作区 */
+.actions {
+  background: #fff;
+  padding: 40rpx 40rpx 80rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__tip {
+    margin-top: 20rpx;
+    font-size: 24rpx;
+    color: #999;
+  }
+}
+
+.shutter {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  border: 6rpx solid #e6e9ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__inner {
+    width: 108rpx;
+    height: 108rpx;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0052d9, #4d8dff);
+  }
+}
+
+.btn-row {
+  display: flex;
+  gap: 24rpx;
+  width: 100%;
+}
+
+.btn-primary,
+.btn-ghost {
+  flex: 1;
+  height: 96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0052d9, #4d8dff);
+  color: #fff;
+
+  &--disabled {
+    opacity: 0.6;
+  }
+}
+
+.btn-ghost {
+  background: #f5f6f8;
+  color: #666;
+}

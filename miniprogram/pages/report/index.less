@@ -1,0 +1,214 @@
+.report {
+  min-height: 100vh;
+  background: #f5f6f8;
+  padding: 32rpx 32rpx 200rpx;
+}
+
+/* 状态卡 */
+.status-card {
+  border-radius: 24rpx;
+  padding: 36rpx;
+  margin-bottom: 28rpx;
+  color: #fff;
+
+  &--finalized {
+    background: linear-gradient(135deg, #00a870, #4ec9a0);
+  }
+
+  &--pending {
+    background: linear-gradient(135deg, #0052d9, #4d8dff);
+  }
+
+  &--analyzing,
+  &--uploaded {
+    background: linear-gradient(135deg, #0052d9, #4d8dff);
+  }
+
+  &--rejected,
+  &--failed {
+    background: linear-gradient(135deg, #d54941, #e77f78);
+  }
+
+  &__text {
+    font-size: 40rpx;
+    font-weight: 700;
+  }
+
+  &__meta {
+    font-size: 26rpx;
+    opacity: 0.9;
+    margin-top: 12rpx;
+  }
+}
+
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 28rpx;
+
+  &__title {
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #000000e6;
+    margin-bottom: 24rpx;
+  }
+}
+
+.annotated {
+  width: 100%;
+  border-radius: 16rpx;
+  background: #f5f6f8;
+}
+
+.hint {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+  margin-top: 16rpx;
+}
+
+/* 检测标签 */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  background: #eef4ff;
+  border-radius: 30rpx;
+  padding: 12rpx 24rpx;
+
+  &__label {
+    font-size: 28rpx;
+    font-weight: 600;
+    color: #0052d9;
+  }
+
+  &__conf {
+    font-size: 24rpx;
+    color: #6b9ae8;
+    margin-left: 12rpx;
+  }
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+  padding: 32rpx 0;
+}
+
+/* 医生意见 */
+.doctor-note {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.7;
+  background: #f5f9ff;
+  border-left: 6rpx solid #0052d9;
+  padding: 24rpx;
+  border-radius: 8rpx;
+}
+
+/* 商品推荐 */
+.product {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f2f5;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+    padding-right: 20rpx;
+  }
+
+  &__name {
+    font-size: 30rpx;
+    font-weight: 500;
+    color: #333;
+  }
+
+  &__desc {
+    font-size: 24rpx;
+    color: #999;
+    margin-top: 8rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__buy {
+    flex-shrink: 0;
+    background: #fff1f0;
+    color: #e5493d;
+    font-size: 26rpx;
+    padding: 12rpx 28rpx;
+    border-radius: 30rpx;
+  }
+}
+
+/* 免责声明 */
+.disclaimer {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.6;
+  padding: 24rpx 16rpx;
+  text-align: center;
+}
+
+/* 底部操作 */
+.bottom-btns {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 20rpx;
+  padding: 24rpx 32rpx calc(24rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary,
+.btn-ghost {
+  flex: 1;
+  height: 92rpx;
+  line-height: 92rpx;
+  text-align: center;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0052d9, #4d8dff);
+  color: #fff;
+}
+
+.btn-ghost {
+  background: #f5f6f8;
+  color: #666;
+}
+
+/* loading */
+.loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__text {
+    margin-top: 24rpx;
+    color: #999;
+    font-size: 28rpx;
+  }
+}

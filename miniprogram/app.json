@@ -1,26 +1,39 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/camera/camera",
-    "pages/report/report",
-    "pages/history/history",
-    "pages/products/products"
+    "pages/home/index",
+    "pages/message/index",
+    "pages/my/index",
+    "pages/camera/index",
+    "pages/report/index"
   ],
+  "usingComponents": {
+    "t-toast": "tdesign-miniprogram/toast/toast"
+  },
   "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "口腔AI检测",
-    "navigationBarBackgroundColor": "#2f6df6",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#f5f6f8"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#2f6df6",
+    "custom": true,
     "list": [
-      { "pagePath": "pages/index/index", "text": "首页" },
-      { "pagePath": "pages/history/history", "text": "记录" },
-      { "pagePath": "pages/products/products", "text": "好物" }
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "好物"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的"
+      }
     ]
   },
-  "style": "v2",
+  "resolveAlias": {
+    "~/*": "/*"
+  },
   "sitemapLocation": "sitemap.json"
 }

@@ -1,0 +1,86 @@
+<nav title-text="个人中心" />
+
+<view class="my">
+  <view class="profile">
+    <view class="profile__avatar">
+      <t-icon name="user" size="64rpx" color="#0052d9" />
+    </view>
+    <view class="profile__info">
+      <view class="profile__name">{{loggedIn ? phone : '未登录'}}</view>
+      <view class="profile__sub">{{loggedIn ? '已登录' : '请前往首页登录'}}</view>
+    </view>
+  </view>
+
+  <block wx:if="{{loggedIn}}">
+    <view class="stat-card">
+      <view class="stat-card__health">
+        <view class="stat-card__score">{{healthScore === null ? '--' : healthScore}}</view>
+        <view class="stat-card__label">健康评分</view>
+        <view class="stat-card__level" wx:if="{{scoreLevel}}" style="color: {{scoreLevel.color}}">{{scoreLevel.label}}</view>
+        <view class="stat-card__level" wx:else>未评估</view>
+      </view>
+      <view class="stat-card__divider"></view>
+      <view class="stat-card__nums">
+        <view class="stat-item">
+          <view class="stat-item__num">{{stats.total}}</view>
+          <view class="stat-item__label">检测次数</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-item__num">{{stats.finalized}}</view>
+          <view class="stat-item__label">已出报告</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-item__num">{{stats.pending}}</view>
+          <view class="stat-item__label">待复核</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section__head">
+        <view class="section__title">检测记录</view>
+        <view class="section__action" bindtap="onStartDetect">+ 新检测</view>
+      </view>
+
+      <view wx:if="{{loading}}" class="loading">
+        <t-loading theme="circular" size="44rpx" />
+      </view>
+
+      <block wx:elif="{{records.length}}">
+        <view
+          class="record"
+          wx:for="{{records}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onOpenRecord"
+        >
+          <view class="record__left">
+            <view class="record__tooth">牙位 {{item.tooth_position || '未填'}}</view>
+            <view class="record__meta">
+              {{item.view === 'occlusal' ? '咬合面' : '唇颊面'}} · 检出 {{item.detCount}}
+            </view>
+            <view class="record__time">{{item.dateText}}</view>
+          </view>
+          <view class="record__right">
+            <view class="record__status record__status--{{item.status}}">{{item.statusText}}</view>
+            <t-icon name="chevron-right" size="36rpx" color="#c5ccd9" />
+          </view>
+        </view>
+      </block>
+
+      <view wx:else class="empty">
+        <t-icon name="file" size="88rpx" color="#d5dbe6" />
+        <view class="empty__text">暂无检测记录</view>
+        <view class="empty__btn" bindtap="onStartDetect">开始第一次检测</view>
+      </view>
+    </view>
+
+    <view class="logout" bindtap="onLogout">退出登录</view>
+  </block>
+
+  <view class="guest" wx:else>
+    <t-icon name="user-circle" size="120rpx" color="#d5dbe6" />
+    <view class="guest__text">登录后查看检测记录与健康趋势</view>
+    <view class="guest__btn" bindtap="onGoHome">前往登录</view>
+  </view>
+</view>
