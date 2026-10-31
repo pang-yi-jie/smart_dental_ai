@@ -1,4 +1,4 @@
-﻿import { getMembers, getAssessments, getTasks } from '~/api/index';
+import { getMembers, getAssessments, getTasks } from '~/api/index';
 
 const RISK_TEXT = { low: '低风险', mid: '中风险', high: '高风险' };
 const RISK_COLOR = { low: '#15816C', mid: '#C17A26', high: '#C55A49' };

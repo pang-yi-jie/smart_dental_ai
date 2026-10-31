@@ -1,4 +1,4 @@
-﻿import { isLoggedIn, loginByPhone, getMembers, getAssessments } from '~/api/index';
+import { isLoggedIn, loginByPhone, getMembers, getAssessments } from '~/api/index';
 
 const ROLE_TEXT = { father: '父亲', mother: '母亲', child: '孩子', self: '自己' };
 const RISK_TEXT = { low: '低风险', mid: '中风险', high: '高风险' };

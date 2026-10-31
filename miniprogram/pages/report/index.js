@@ -1,4 +1,4 @@
-﻿import { getAssessment, getProducts, getVideos } from '~/api/index';
+import { getAssessment, getProducts, getVideos } from '~/api/index';
 import { BASE_URL } from '~/api/request';
 
 const RISK_TEXT = { low: '低风险', mid: '中风险', high: '高风险' };

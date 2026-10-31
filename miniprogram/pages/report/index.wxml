@@ -1,4 +1,4 @@
-﻿<nav title-text="评估报告" />
+<nav title-text="评估报告" />
 
 <view class="report" wx:if="{{assessment}}">
   <!-- 风险等级卡 -->
