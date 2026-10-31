@@ -1,5 +1,0 @@
-.empty { text-align: center; color: #999; padding: 120rpx 0; }
-.item { display: flex; justify-content: space-between; align-items: center; }
-.title { font-size: 32rpx; font-weight: 700; }
-.desc { color: #999; margin-top: 8rpx; font-size: 26rpx; }
-.buy { margin: 0; }

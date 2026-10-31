@@ -64,8 +64,8 @@
                 },
     "compileType":  "miniprogram",
     "libVersion":  "3.7.8",
-    "appid":  "touristappid",
-    "projectname":  "SmartDentalAI",
+    "appid":  "wx8ce57f6503aeadd8",
+    "projectname":  "AIOfDental",
     "condition":  {
                       "miniprogram":  {
                                           "list":  [

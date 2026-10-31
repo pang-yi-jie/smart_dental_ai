@@ -1,4 +1,4 @@
-# ===== 运行时数据 / 生成产物 =====
+﻿# ===== 运行时数据 / 生成产物 =====
 data/
 outputs/
 samples/
@@ -28,4 +28,4 @@ miniprogram/miniprogram_npm/
 *.log
 .DS_Store
 Thumbs.db
-miniprogram_template/
+

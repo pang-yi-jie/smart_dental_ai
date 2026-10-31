@@ -1,7 +1,0 @@
-.empty { text-align: center; color: #999; padding: 120rpx 0; }
-.item { display: flex; justify-content: space-between; align-items: center; }
-.tooth { font-size: 32rpx; font-weight: 700; }
-.view { color: #999; margin-top: 8rpx; font-size: 26rpx; }
-.right { display: flex; align-items: center; }
-.status { color: #2f6df6; margin-right: 8rpx; }
-.arrow { color: #ccc; font-size: 40rpx; }
