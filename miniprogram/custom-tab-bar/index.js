@@ -3,7 +3,7 @@ Component({
     value: '',
     list: [
       { icon: 'home', value: 'home', label: '首页' },
-      { icon: 'shop', value: 'message', label: '好物' },
+      { icon: 'history', value: 'message', label: '记录' },
       { icon: 'user', value: 'my', label: '我的' },
     ],
   },

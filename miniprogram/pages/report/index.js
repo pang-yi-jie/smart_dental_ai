@@ -1,94 +1,75 @@
-import { getCase, getProducts } from '~/api/index';
+import { getAssessment, getProducts, getVideos } from '~/api/index';
 import { BASE_URL } from '~/api/request';
 
-const STATUS_TEXT = {
-  uploaded: '已上传',
-  analyzing: 'AI 分析中',
-  pending: '待医生复核',
-  finalized: '已定稿',
-  rejected: '需重新拍摄',
-  failed: '分析失败',
-};
+const RISK_TEXT = { low: '低风险', mid: '中风险', high: '高风险' };
+const RISK_COLOR = { low: '#07C160', mid: '#FF9500', high: '#FA5151' };
 
 Page({
   data: {
-    caseData: null,
+    assessment: null,
     annotatedUrl: '',
     detections: [],
-    statusText: '',
-    doctorSuggestion: '',
-    // 推荐商品
-    recommendTitle: '',
-    recommendProducts: [],
+    riskLevel: null,
+    riskText: '待评估',
+    riskColor: '#999999',
+    classificationNote: '',
+    // 定向推送
+    videos: [],
+    products: [],
   },
 
   onLoad(options) {
-    this.caseId = options.id;
-    this.load();
+    this.assessmentId = options.id;
   },
 
   onShow() {
-    if (this.loaded) this.load();
+    this.load();
   },
 
   load() {
-    getCase(this.caseId)
+    getAssessment(this.assessmentId)
       .then((res) => {
-        this.loaded = true;
-        const ai = res.ai_result || {};
-        const annotated = ai.annotated_image || '';
-        const detections = ai.detections || [];
-        const edited = res.doctor_edited || {};
+        const annotated = res.annotated_image || '';
+        const detections = res.detections || [];
+        const cls = res.classification || {};
+        const risk = res.risk_level;
 
         this.setData({
-          caseData: res,
+          assessment: res,
           detections,
-          statusText: STATUS_TEXT[res.status] || res.status,
-          doctorSuggestion: edited.suggestion || '',
+          riskLevel: risk,
+          riskText: risk ? RISK_TEXT[risk] : '待评估',
+          riskColor: RISK_COLOR[risk] || '#999999',
+          classificationNote: cls.note || '',
           annotatedUrl: annotated ? `${BASE_URL}/files/${annotated}` : '',
         });
 
-        this.loadRecommend(detections.length);
+        this.loadRecommend();
       })
       .catch(() => {
         wx.showToast({ title: '报告加载失败', icon: 'none' });
       });
   },
 
-  /** 加载推荐商品（根据检测结果个性化） */
-  loadRecommend(detCount) {
-    getProducts()
-      .then((list) => {
-        if (!list || !list.length) return;
-        // 简单推荐策略：检测到问题（有检出）→ 推荐牙膏/牙刷为主
-        let picked = list;
-        let title = '精选口腔护理好物';
-        if (detCount > 0) {
-          title = '根据您的检测结果，建议关注这些护理产品';
-          picked = list.filter((p) => p.category !== 'device');
-          if (!picked.length) picked = list;
-        }
-        this.setData({ recommendTitle: title, recommendProducts: picked.slice(0, 6) });
-      })
-      .catch(() => {
-        // 无商品时静默
-      });
+  /** 定向推送：科普视频 + 商品 */
+  loadRecommend() {
+    getVideos().then((list) => {
+      this.setData({ videos: (list || []).slice(0, 3) });
+    }).catch(() => {});
+    getProducts().then((list) => {
+      this.setData({ products: (list || []).slice(0, 4) });
+    }).catch(() => {});
   },
 
-  /** 复制淘口令 */
   onBuy(e) {
-    const { code } = e.currentTarget.dataset;
+    const code = e.currentTarget.dataset.code;
     if (!code) {
       wx.showToast({ title: '该商品暂无购买链接', icon: 'none' });
       return;
     }
-    wx.setClipboardData({
-      data: code,
-      success: () => wx.showToast({ title: '淘口令已复制，打开淘宝即可' }),
-    });
+    wx.setClipboardData({ data: code, success: () => wx.showToast({ title: '淘口令已复制' }) });
   },
 
-  /** 预览标注大图 */
   onPreview() {
     if (!this.data.annotatedUrl) return;
     wx.previewImage({ urls: [this.data.annotatedUrl] });

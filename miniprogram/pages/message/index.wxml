@@ -1,59 +1,51 @@
-<nav title-text="护理好物" />
+<nav title-text="检测记录" />
 
-<view class="shop">
-  <!-- 个性化推荐头部 -->
-  <view class="personal">
-    <view class="personal__icon">
-      <t-icon name="heart" size="48rpx" color="#fff" />
-    </view>
-    <view class="personal__content">
-      <view class="personal__title">为您精选</view>
-      <view class="personal__tip">{{personalTip}}</view>
-    </view>
-    <view class="personal__score" wx:if="{{healthScore !== null}}">{{healthScore}}<text>分</text></view>
-  </view>
-
-  <!-- 分类切换 -->
-  <scroll-view class="tabs" scroll-x enable-flex>
+<view class="records">
+  <!-- 成员切换 -->
+  <scroll-view class="switcher" scroll-x enable-flex>
     <view
-      wx:for="{{tabs}}"
-      wx:key="key"
-      class="tabs__item {{activeTab === item.key ? 'tabs__item--active' : ''}}"
-      data-key="{{item.key}}"
-      bindtap="onSwitchTab"
-    >{{item.label}}</view>
+      wx:for="{{members}}"
+      wx:key="id"
+      class="switcher__item {{currentMemberId === item.id ? 'switcher__item--active' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onSwitchMember"
+    >{{item.name}}</view>
   </scroll-view>
 
-  <!-- 商品列表 -->
-  <view class="list">
-    <view wx:if="{{loading}}" class="loading">
-      <t-loading theme="circular" size="48rpx" />
+  <!-- 检测记录列表 -->
+  <view class="section">
+    <view class="section__head">
+      <view class="section__title">检测记录</view>
+      <view class="section__action" bindtap="onNewDetect">+ 新检测</view>
     </view>
 
-    <block wx:elif="{{filteredProducts.length}}">
-      <view class="product" wx:for="{{filteredProducts}}" wx:key="id">
-        <view class="product__cover">
-          <image wx:if="{{item.cover_image}}" src="{{item.cover_image}}" mode="aspectFill" class="product__img" />
-          <t-icon wx:else name="image" size="56rpx" color="#c5ccd9" />
-        </view>
-        <view class="product__body">
-          <view class="product__name">{{item.title}}</view>
-          <view class="product__desc">{{item.description || item.meta.desc}}</view>
-          <view class="product__foot">
-            <view class="product__price">{{item.price || '查看详情'}}</view>
-            <view class="product__btn" data-code="{{item.taobao_code}}" data-url="{{item.taobao_url}}" bindtap="onBuy">
-              去购买
-            </view>
-          </view>
-        </view>
-      </view>
-    </block>
+    <view wx:if="{{!records.length}}" class="empty">
+      <t-icon name="file" size="88rpx" color="#d5dbe6" />
+      <view class="empty__text">暂无检测记录</view>
+      <view class="empty__btn" bindtap="onNewDetect">开始第一次检测</view>
+    </view>
 
-    <view wx:else class="empty">
-      <t-icon name="shop" size="96rpx" color="#d5dbe6" />
-      <view class="empty__text">暂无推荐商品</view>
+    <view
+      class="record"
+      wx:for="{{records}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onOpenRecord"
+    >
+      <view class="record__left">
+        <view class="record__risk" style="color: {{item.riskColor}}">{{item.riskText}}</view>
+        <view class="record__meta">检出 {{item.detCount}} 处 · {{item.dateText}}</view>
+      </view>
+      <t-icon name="chevron-right" size="36rpx" color="#c5ccd9" />
     </view>
   </view>
 
-  <view class="foot-tip">商品由平台精选，购买请打开淘宝 App</view>
+  <!-- 护牙计划 -->
+  <view class="section" wx:if="{{tasks.length}}">
+    <view class="section__title">护牙计划</view>
+    <view class="task" wx:for="{{tasks}}" wx:key="id">
+      <view class="task__type">{{item.type}}</view>
+      <view class="task__status">{{item.status}}</view>
+    </view>
+  </view>
 </view>

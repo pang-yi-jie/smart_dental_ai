@@ -1,77 +1,35 @@
-<nav title-text="个人中心" />
+<nav title-text="家庭中心" />
 
 <view class="my">
-  <view class="profile">
-    <view class="profile__avatar">
+  <!-- 账户卡 -->
+  <view class="account">
+    <view class="account__avatar">
       <t-icon name="user" size="64rpx" color="#07C160" />
     </view>
-    <view class="profile__info">
-      <view class="profile__name">{{loggedIn ? phone : '未登录'}}</view>
-      <view class="profile__sub">{{loggedIn ? '已登录' : '请前往首页登录'}}</view>
+    <view class="account__info">
+      <view class="account__name">{{loggedIn ? phone : '未登录'}}</view>
+      <view class="account__sub">家庭账户 · 一个账号管理全家口腔健康</view>
     </view>
   </view>
 
   <block wx:if="{{loggedIn}}">
-    <view class="stat-card">
-      <view class="stat-card__health">
-        <view class="stat-card__score">{{healthScore === null ? '--' : healthScore}}</view>
-        <view class="stat-card__label">健康评分</view>
-        <view class="stat-card__level" wx:if="{{scoreLevel}}" style="color: {{scoreLevel.color}}">{{scoreLevel.label}}</view>
-        <view class="stat-card__level" wx:else>未评估</view>
-      </view>
-      <view class="stat-card__divider"></view>
-      <view class="stat-card__nums">
-        <view class="stat-item">
-          <view class="stat-item__num">{{stats.total}}</view>
-          <view class="stat-item__label">检测次数</view>
-        </view>
-        <view class="stat-item">
-          <view class="stat-item__num">{{stats.finalized}}</view>
-          <view class="stat-item__label">已出报告</view>
-        </view>
-        <view class="stat-item">
-          <view class="stat-item__num">{{stats.pending}}</view>
-          <view class="stat-item__label">待复核</view>
-        </view>
-      </view>
-    </view>
-
+    <!-- 家庭成员 -->
     <view class="section">
       <view class="section__head">
-        <view class="section__title">检测记录</view>
-        <view class="section__action" bindtap="onStartDetect">+ 新检测</view>
+        <view class="section__title">家庭成员</view>
+        <view class="section__action" bindtap="onAddMember">+ 添加</view>
       </view>
 
-      <view wx:if="{{loading}}" class="loading">
-        <t-loading theme="circular" size="44rpx" />
-      </view>
-
-      <block wx:elif="{{records.length}}">
-        <view
-          class="record"
-          wx:for="{{records}}"
-          wx:key="id"
-          data-id="{{item.id}}"
-          bindtap="onOpenRecord"
-        >
-          <view class="record__left">
-            <view class="record__tooth">牙位 {{item.tooth_position || '未填'}}</view>
-            <view class="record__meta">
-              {{item.view === 'occlusal' ? '咬合面' : '唇颊面'}} · 检出 {{item.detCount}}
-            </view>
-            <view class="record__time">{{item.dateText}}</view>
-          </view>
-          <view class="record__right">
-            <view class="record__status record__status--{{item.status}}">{{item.statusText}}</view>
-            <t-icon name="chevron-right" size="36rpx" color="#c5ccd9" />
-          </view>
+      <view class="member" wx:for="{{members}}" wx:key="id">
+        <view class="member__avatar">{{item.name ? item.name[0] : '?'}}</view>
+        <view class="member__body">
+          <view class="member__name">{{item.name}}</view>
+          <view class="member__meta">{{roleText(item.role)}}{{item.birth ? ' · ' + item.birth : ''}}</view>
         </view>
-      </block>
+      </view>
 
-      <view wx:else class="empty">
-        <t-icon name="file" size="88rpx" color="#d5dbe6" />
-        <view class="empty__text">暂无检测记录</view>
-        <view class="empty__btn" bindtap="onStartDetect">开始第一次检测</view>
+      <view class="empty" wx:if="{{!members.length}}">
+        <view class="empty__text">还没有成员，点击右上角添加</view>
       </view>
     </view>
 
@@ -80,7 +38,48 @@
 
   <view class="guest" wx:else>
     <t-icon name="user-circle" size="120rpx" color="#d5dbe6" />
-    <view class="guest__text">登录后查看检测记录与健康趋势</view>
-    <view class="guest__btn" bindtap="onGoHome">前往登录</view>
+    <view class="guest__text">登录后管理家庭成员</view>
+  </view>
+
+  <!-- 添加成员弹层 -->
+  <view class="mask" wx:if="{{showForm}}" bindtap="onCloseForm"></view>
+  <view class="sheet" wx:if="{{showForm}}">
+    <view class="sheet__head">
+      <view class="sheet__title">添加家庭成员</view>
+      <t-icon name="close" size="44rpx" color="#999999" bindtap="onCloseForm" />
+    </view>
+
+    <view class="field">
+      <view class="field__label">称呼</view>
+      <view class="seg">
+        <view
+          wx:for="{{roleOptions}}"
+          wx:key="key"
+          class="seg__item {{form.role === item.key ? 'seg__item--active' : ''}}"
+          data-role="{{item.key}}"
+          bindtap="onPickRole"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <view class="field__label">姓名</view>
+      <input class="input" placeholder="请输入姓名" value="{{form.name}}" data-field="name" bindinput="onFormInput" />
+    </view>
+
+    <view class="field">
+      <view class="field__label">出生年月</view>
+      <input class="input" placeholder="如 2016-06" value="{{form.birth}}" data-field="birth" bindinput="onFormInput" />
+    </view>
+
+    <view class="field">
+      <view class="field__label">性别</view>
+      <view class="seg">
+        <view class="seg__item {{form.gender === 'male' ? 'seg__item--active' : ''}}" data-gender="male" bindtap="onPickGender">男</view>
+        <view class="seg__item {{form.gender === 'female' ? 'seg__item--active' : ''}}" data-gender="female" bindtap="onPickGender">女</view>
+      </view>
+    </view>
+
+    <view class="btn-primary" bindtap="submitMember">保存</view>
   </view>
 </view>

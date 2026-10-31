@@ -1,0 +1,85 @@
+@import '/variable.less';
+
+.questionnaire {
+  min-height: 100vh;
+  padding: 24rpx 32rpx 200rpx;
+}
+
+.q {
+  background: @bg-white;
+  border-radius: @radius-card;
+  box-shadow: @shadow-card;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+
+  &__index {
+    font-size: @font-aux;
+    color: @brand-color;
+    font-weight: 500;
+  }
+
+  &__title {
+    font-size: @font-title-sm;
+    font-weight: 600;
+    color: @text-primary;
+    margin: 12rpx 0 28rpx;
+    line-height: 1.4;
+  }
+}
+
+.opt {
+  display: flex;
+  align-items: center;
+  padding: 26rpx 24rpx;
+  border: 2rpx solid @divider-color;
+  border-radius: @radius-card;
+  margin-bottom: 16rpx;
+
+  &--active {
+    border-color: @brand-color;
+    background: @brand-color-light;
+  }
+
+  &__radio {
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 50%;
+    border: 2rpx solid @text-disabled;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &--active &__radio {
+    border-color: @brand-color;
+  }
+
+  &__dot {
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 50%;
+    background: @brand-color;
+  }
+
+  &__label {
+    margin-left: 20rpx;
+    font-size: @font-body;
+    color: @text-primary;
+  }
+}
+
+.btn-primary {
+  height: @btn-height;
+  line-height: @btn-height;
+  text-align: center;
+  background: @brand-color;
+  color: #fff;
+  border-radius: @radius-btn;
+  font-size: @font-body;
+  font-weight: 500;
+
+  &:active {
+    opacity: 0.7;
+  }
+}

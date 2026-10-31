@@ -4,7 +4,8 @@
     "pages/message/index",
     "pages/my/index",
     "pages/camera/index",
-    "pages/report/index"
+    "pages/report/index",
+    "pages/questionnaire/index"
   ],
   "usingComponents": {
     "t-toast": "tdesign-miniprogram/toast/toast"
@@ -24,7 +25,7 @@
       },
       {
         "pagePath": "pages/message/index",
-        "text": "好物"
+        "text": "记录"
       },
       {
         "pagePath": "pages/my/index",

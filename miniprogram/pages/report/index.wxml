@@ -1,12 +1,11 @@
-<nav title-text="检测报告" />
+<nav title-text="评估报告" />
 
-<view class="report" wx:if="{{caseData}}">
-  <!-- 状态卡 -->
-  <view class="status-card status-card--{{caseData.status}}">
-    <view class="status-card__text">{{statusText}}</view>
-    <view class="status-card__meta">
-      牙位 {{caseData.tooth_position || '未填'}} · {{caseData.view === 'occlusal' ? '咬合面' : '唇颊面'}}
-    </view>
+<view class="report" wx:if="{{assessment}}">
+  <!-- 风险等级卡 -->
+  <view class="risk-card" style="background: {{riskColor}}">
+    <view class="risk-card__label">口腔风险初评</view>
+    <view class="risk-card__value">{{riskText}}</view>
+    <view class="risk-card__tip">AI 辅助筛查结果，仅供健康参考</view>
   </view>
 
   <!-- AI 标注图 -->
@@ -18,44 +17,42 @@
 
   <!-- 检测明细 -->
   <view class="card">
-    <view class="card__title">检测明细（{{detections.length}}）</view>
+    <view class="card__title">牙位检测（{{detections.length}}）</view>
     <view class="chips" wx:if="{{detections.length}}">
       <view class="chip" wx:for="{{detections}}" wx:key="index">
-        <text class="chip__label">{{item.label}}</text>
+        <text class="chip__label">{{item.tooth}}</text>
         <text class="chip__conf">{{item.confidence * 100}}%</text>
       </view>
     </view>
     <view class="empty" wx:else>本张图片未检出牙位目标</view>
   </view>
 
-  <!-- 医生意见 -->
-  <view class="card" wx:if="{{doctorSuggestion}}">
-    <view class="card__title">医生诊断意见</view>
-    <view class="doctor-note">{{doctorSuggestion}}</view>
+  <!-- 分类说明 -->
+  <view class="card" wx:if="{{classificationNote}}">
+    <view class="card__title">评估说明</view>
+    <view class="note">{{classificationNote}}</view>
   </view>
 
-  <!-- 好物推荐 -->
-  <view class="card" wx:if="{{recommendProducts.length}}">
-    <view class="card__title">{{recommendTitle}}</view>
-    <view
-      class="product"
-      wx:for="{{recommendProducts}}"
-      wx:key="id"
-      data-code="{{item.taobao_code}}"
-      bindtap="onBuy"
-    >
-      <view class="product__info">
-        <view class="product__name">{{item.title}}</view>
-        <view class="product__desc">{{item.description || item.category}}</view>
-      </view>
-      <view class="product__buy">{{item.price || '去购买'}}</view>
+  <!-- 科普视频（定向推送） -->
+  <view class="card" wx:if="{{videos.length}}">
+    <view class="card__title">推荐科普</view>
+    <view class="video" wx:for="{{videos}}" wx:key="id">
+      <view class="video__title">{{item.title}}</view>
+      <t-icon name="play-circle" size="40rpx" color="#07C160" />
+    </view>
+  </view>
+
+  <!-- 商品推荐（定向推送） -->
+  <view class="card" wx:if="{{products.length}}">
+    <view class="card__title">护理好物</view>
+    <view class="product" wx:for="{{products}}" wx:key="id" data-code="{{item.taobao_code}}" bindtap="onBuy">
+      <view class="product__name">{{item.title}}</view>
+      <view class="product__buy">去购买</view>
     </view>
   </view>
 
   <!-- 免责声明 -->
-  <view class="disclaimer">
-    本结果由 AI 辅助生成，仅供医生参考，不构成最终诊断。如有不适请及时就医。
-  </view>
+  <view class="disclaimer">本报告由人工智能生成，仅提供口腔健康信息参考，不构成医疗诊断。如有疼痛、出血、肿胀等不适，建议及时前往正规医疗机构就诊。</view>
 
   <!-- 底部操作 -->
   <view class="bottom-btns">

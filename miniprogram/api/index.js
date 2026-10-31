@@ -1,51 +1,67 @@
-import { request, upload } from './request';
+import { request, upload, BASE_URL } from './request';
 
-/** 患者登录（手机号） */
+/** 家长登录（手机号） */
 export function loginByPhone(phone) {
   return request('/api/auth/wechat', 'POST', { phone, openid: '' }).then((res) => {
     wx.setStorageSync('access_token', res.access_token);
-    wx.setStorageSync('user_id', res.user_id);
+    wx.setStorageSync('account_id', res.account_id);
     wx.setStorageSync('phone', phone);
     return res;
   });
 }
 
-/** 当前是否已登录 */
 export function isLoggedIn() {
   return !!wx.getStorageSync('access_token');
 }
 
-/** 退出登录 */
 export function logout() {
   wx.removeStorageSync('access_token');
-  wx.removeStorageSync('user_id');
-  wx.removeStorageSync('phone');
+  wx.removeStorageSync('account_id');
 }
 
-/** 创建病例并上传图片（同步跑 AI 分析） */
-export function createCase(filePath, view, toothPosition) {
-  return upload('/api/cases', filePath, {
-    view,
-    tooth_position: toothPosition || '',
-  });
+/** 家庭成员 */
+export function getMembers() {
+  return request('/api/members');
 }
 
-/** 获取单个病例 */
-export function getCase(id) {
-  return request(`/api/cases/${id}`);
+export function createMember(data) {
+  return request('/api/members', 'POST', data);
 }
 
-/** 我的历史病例 */
-export function getMyCases() {
-  return request('/api/my/cases');
+/** 档案级问卷 */
+export function saveQuestionnaire(memberId, answers) {
+  return request(`/api/members/${memberId}/questionnaire`, 'POST', { answers });
 }
 
-/** 商品列表 */
+export function getQuestionnaire(memberId) {
+  return request(`/api/members/${memberId}/questionnaire`);
+}
+
+/** 评估 */
+export function createAssessment(memberId, filePath, view) {
+  return upload('/api/assessments', filePath, { member_id: memberId, view });
+}
+
+export function getAssessments(memberId) {
+  return request(`/api/members/${memberId}/assessments`);
+}
+
+export function getAssessment(id) {
+  return request(`/api/assessments/${id}`);
+}
+
+/** 护牙任务 */
+export function getTasks(memberId) {
+  return request(`/api/members/${memberId}/tasks`);
+}
+
+/** 内容：科普视频 + 商品（定向推送） */
+export function getVideos(category) {
+  return request('/api/videos' + (category ? `?category=${category}` : ''));
+}
+
 export function getProducts(category) {
   return request('/api/products' + (category ? `?category=${category}` : ''));
 }
 
-/** 商品详情 */
-export function getProduct(id) {
-  return request(`/api/products/${id}`);
-}
+export { BASE_URL };

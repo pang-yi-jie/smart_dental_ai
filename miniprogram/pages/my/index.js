@@ -1,84 +1,74 @@
-import { isLoggedIn, logout, getMyCases } from '~/api/index';
-import { calcScore, getScoreLevel } from '~/utils/questionnaire';
+import { isLoggedIn, logout, getMembers, createMember } from '~/api/index';
 
-const STATUS_TEXT = {
-  uploaded: '已上传',
-  analyzing: '分析中',
-  pending: '待复核',
-  finalized: '已定稿',
-  rejected: '需重拍',
-  failed: '失败',
-};
+const ROLE_TEXT = { father: '父亲', mother: '母亲', child: '孩子', self: '自己' };
+const ROLE_OPTIONS = [
+  { key: 'father', label: '父亲' },
+  { key: 'mother', label: '母亲' },
+  { key: 'child', label: '孩子' },
+  { key: 'self', label: '自己' },
+];
 
 Page({
   data: {
     loggedIn: false,
     phone: '',
-    healthScore: null,
-    scoreLevel: null,
-    records: [],
-    loading: false,
-    stats: { total: 0, finalized: 0, pending: 0 },
+    members: [],
+    showForm: false,
+    form: { role: 'child', name: '', birth: '', gender: '' },
+    roleOptions: ROLE_OPTIONS,
   },
 
   onShow() {
     const loggedIn = isLoggedIn();
     this.setData({ loggedIn, phone: wx.getStorageSync('phone') || '' });
-    if (loggedIn) {
-      this.loadHealth();
-      this.loadRecords();
+    if (loggedIn) this.loadMembers();
+  },
+
+  loadMembers() {
+    getMembers().then((list) => {
+      this.setData({ members: list });
+    }).catch(() => {});
+  },
+
+  roleText(r) {
+    return ROLE_TEXT[r] || r;
+  },
+
+  // ---------- 添加成员 ----------
+  onAddMember() {
+    this.setData({ showForm: true, form: { role: 'child', name: '', birth: '', gender: '' } });
+  },
+
+  onCloseForm() {
+    this.setData({ showForm: false });
+  },
+
+  onFormInput(e) {
+    const field = e.currentTarget.dataset.field;
+    this.setData({ [`form.${field}`]: e.detail.value });
+  },
+
+  onPickRole(e) {
+    this.setData({ 'form.role': e.currentTarget.dataset.role });
+  },
+
+  onPickGender(e) {
+    this.setData({ 'form.gender': e.currentTarget.dataset.gender });
+  },
+
+  submitMember() {
+    const { role, name, birth, gender } = this.data.form;
+    if (!name.trim()) {
+      wx.showToast({ title: '请填写姓名', icon: 'none' });
+      return;
     }
-  },
-
-  loadHealth() {
-    const saved = wx.getStorageSync('questionnaire');
-    if (saved && saved.answers) {
-      const score = calcScore(saved.answers);
-      this.setData({ healthScore: score, scoreLevel: getScoreLevel(score) });
-    }
-  },
-
-  loadRecords() {
-    this.setData({ loading: true });
-    getMyCases()
-      .then((list) => {
-        const records = (list || []).map((c) => ({
-          ...c,
-          statusText: STATUS_TEXT[c.status] || c.status,
-          detCount: ((c.ai_result || {}).detections || []).length,
-          dateText: this.formatDate(c.created_at),
-        }));
-        const stats = {
-          total: records.length,
-          finalized: records.filter((r) => r.status === 'finalized').length,
-          pending: records.filter((r) => r.status === 'pending').length,
-        };
-        this.setData({ records, stats, loading: false });
-      })
-      .catch(() => {
-        this.setData({ loading: false });
-        wx.showToast({ title: '记录加载失败', icon: 'none' });
-      });
-  },
-
-  formatDate(iso) {
-    if (!iso) return '';
-    const d = new Date(iso);
-    const p = (n) => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
-  },
-
-  onOpenRecord(e) {
-    const { id } = e.currentTarget.dataset;
-    wx.navigateTo({ url: `/pages/report/index?id=${id}` });
-  },
-
-  onStartDetect() {
-    wx.navigateTo({ url: '/pages/camera/index' });
-  },
-
-  onGoHome() {
-    wx.switchTab({ url: '/pages/home/index' });
+    createMember({ role, name: name.trim(), birth, gender }).then(() => {
+      this.setData({ showForm: false });
+      this.loadMembers();
+      wx.showToast({ title: '已添加' });
+    }).catch(() => {
+      wx.showToast({ title: '添加失败', icon: 'none' });
+    });
   },
 
   onLogout() {
@@ -88,13 +78,7 @@ Page({
       success: (res) => {
         if (res.confirm) {
           logout();
-          this.setData({
-            loggedIn: false,
-            records: [],
-            stats: { total: 0, finalized: 0, pending: 0 },
-            healthScore: null,
-            scoreLevel: null,
-          });
+          this.setData({ loggedIn: false, members: [] });
           wx.switchTab({ url: '/pages/home/index' });
         }
       },

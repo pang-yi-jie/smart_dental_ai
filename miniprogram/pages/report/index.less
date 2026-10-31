@@ -5,37 +5,28 @@
   padding: 24rpx 16rpx 200rpx;
 }
 
-/* 状态卡 */
-.status-card {
+/* 风险等级卡 */
+.risk-card {
   border-radius: @radius-card;
-  padding: 32rpx;
+  padding: 40rpx 32rpx;
   margin-bottom: 16rpx;
   color: #fff;
+  text-align: center;
 
-  &--finalized {
-    background: linear-gradient(135deg, #06ad56, #07c160);
-  }
-
-  &--pending,
-  &--analyzing,
-  &--uploaded {
-    background: linear-gradient(135deg, #0e8fe0, #10aeff);
-  }
-
-  &--rejected,
-  &--failed {
-    background: linear-gradient(135deg, #e04a3f, #fa5151);
-  }
-
-  &__text {
-    font-size: @font-title-sm;
-    font-weight: 700;
-  }
-
-  &__meta {
+  &__label {
     font-size: @font-aux;
     opacity: 0.9;
-    margin-top: 10rpx;
+  }
+
+  &__value {
+    font-size: 64rpx;
+    font-weight: 700;
+    margin: 12rpx 0;
+  }
+
+  &__tip {
+    font-size: @font-note;
+    opacity: 0.85;
   }
 }
 
@@ -67,7 +58,7 @@
   margin-top: 16rpx;
 }
 
-/* 检测标签 */
+/* 牙位标签 */
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -101,8 +92,8 @@
   padding: 32rpx 0;
 }
 
-/* 医生意见 */
-.doctor-note {
+/* 评估说明 */
+.note {
   font-size: @font-body;
   color: @text-primary;
   line-height: 1.7;
@@ -110,6 +101,29 @@
   border-left: 6rpx solid @brand-color;
   padding: 24rpx;
   border-radius: 8rpx;
+}
+
+/* 科普视频 */
+.video {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid @divider-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__title {
+    font-size: @font-body;
+    color: @text-primary;
+    flex: 1;
+    padding-right: 20rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 /* 商品推荐 */
@@ -124,22 +138,11 @@
     border-bottom: none;
   }
 
-  &__info {
-    flex: 1;
-    min-width: 0;
-    padding-right: 20rpx;
-  }
-
   &__name {
+    flex: 1;
     font-size: @font-body;
-    font-weight: 500;
     color: @text-primary;
-  }
-
-  &__desc {
-    font-size: @font-note;
-    color: @text-tertiary;
-    margin-top: 6rpx;
+    padding-right: 20rpx;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

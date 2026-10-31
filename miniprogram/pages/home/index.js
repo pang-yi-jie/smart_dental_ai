@@ -1,37 +1,66 @@
-import { isLoggedIn, loginByPhone } from '~/api/index';
-import { QUESTIONS, calcScore, getScoreLevel } from '~/utils/questionnaire';
+import { isLoggedIn, loginByPhone, getMembers, getAssessments } from '~/api/index';
+
+const ROLE_TEXT = { father: '父亲', mother: '母亲', child: '孩子', self: '自己' };
+const RISK_TEXT = { low: '低风险', mid: '中风险', high: '高风险' };
 
 Page({
   data: {
     loggedIn: false,
     phone: '',
-    // 问卷
-    questions: QUESTIONS,
-    answers: {},
-    currentIndex: 0,
-    showQuestionnaire: false,
-    progress: 0,
-    // 健康评分
-    score: null,
-    scoreLevel: null,
+    members: [],
+    currentMember: null,
+    currentMemberId: null,
+    riskLevel: null,
+    riskText: '暂无检测',
+    riskColor: '#999999',
   },
 
   onShow() {
     const loggedIn = isLoggedIn();
     this.setData({ loggedIn, phone: wx.getStorageSync('phone') || '' });
-    if (loggedIn) this.loadLocalRecord();
+    if (loggedIn) this.loadMembers();
   },
 
-  /** 读取本地保存的问卷结果 */
-  loadLocalRecord() {
-    const saved = wx.getStorageSync('questionnaire');
-    if (saved && saved.answers) {
-      const score = calcScore(saved.answers);
-      this.setData({ answers: saved.answers, score, scoreLevel: getScoreLevel(score) });
-    }
+  loadMembers() {
+    getMembers().then((list) => {
+      this.setData({ members: list });
+      const savedId = wx.getStorageSync('current_member_id');
+      const cur = list.find((m) => m.id === savedId) || list[0];
+      if (cur) this.selectMember(cur);
+    }).catch(() => {
+      wx.showToast({ title: '成员加载失败', icon: 'none' });
+    });
   },
 
-  // ---------- 登录 ----------
+  selectMember(m) {
+    wx.setStorageSync('current_member_id', m.id);
+    this.setData({ currentMember: m, currentMemberId: m.id });
+    this.loadRisk(m.id);
+  },
+
+  loadRisk(memberId) {
+    getAssessments(memberId).then((list) => {
+      const latest = list && list[0];
+      const risk = latest && latest.risk_level;
+      const color = { low: '#07C160', mid: '#FF9500', high: '#FA5151' }[risk] || '#999999';
+      this.setData({
+        riskLevel: risk,
+        riskText: risk ? RISK_TEXT[risk] : '暂无检测',
+        riskColor: color,
+      });
+    }).catch(() => {});
+  },
+
+  roleText(r) {
+    return ROLE_TEXT[r] || r;
+  },
+
+  onSwitchMember(e) {
+    const id = e.currentTarget.dataset.id;
+    const m = this.data.members.find((x) => x.id === id);
+    if (m) this.selectMember(m);
+  },
+
   onPhoneInput(e) {
     this.setData({ phone: e.detail.value });
   },
@@ -43,85 +72,34 @@ Page({
       return;
     }
     wx.showLoading({ title: '登录中' });
-    loginByPhone(phone)
-      .then(() => {
-        wx.hideLoading();
-        this.setData({ loggedIn: true });
-        this.loadLocalRecord();
-        wx.showToast({ title: '登录成功' });
-      })
-      .catch(() => {
-        wx.hideLoading();
-        wx.showToast({ title: '登录失败，请检查网络', icon: 'none' });
-      });
-  },
-
-  // ---------- 问卷 ----------
-  onOpenQuestionnaire() {
-    if (!this.data.loggedIn) {
-      wx.showToast({ title: '请先登录', icon: 'none' });
-      return;
-    }
-    this.setData({ showQuestionnaire: true, currentIndex: 0, progress: 0 });
-  },
-
-  onCloseQuestionnaire() {
-    this.setData({ showQuestionnaire: false });
-  },
-
-  onAnswer(e) {
-    const { qid, value } = e.currentTarget.dataset;
-    const answers = { ...this.data.answers, [qid]: Number(value) };
-    const answered = QUESTIONS.filter((q) => answers[q.id]).length;
-    this.setData({
-      answers,
-      progress: Math.round((answered / QUESTIONS.length) * 100),
+    loginByPhone(phone).then(() => {
+      wx.hideLoading();
+      this.setData({ loggedIn: true });
+      this.loadMembers();
+    }).catch(() => {
+      wx.hideLoading();
+      wx.showToast({ title: '登录失败', icon: 'none' });
     });
   },
 
-  onPrev() {
-    if (this.data.currentIndex > 0) {
-      this.setData({ currentIndex: this.data.currentIndex - 1 });
-    }
-  },
-
-  onNext() {
-    const { currentIndex, questions, answers } = this.data;
-    const q = questions[currentIndex];
-    if (!answers[q.id]) {
-      wx.showToast({ title: '请选择一个答案', icon: 'none' });
-      return;
-    }
-    if (currentIndex < questions.length - 1) {
-      this.setData({ currentIndex: currentIndex + 1 });
-    } else {
-      this.submitQuestionnaire();
-    }
-  },
-
-  submitQuestionnaire() {
-    const { answers } = this.data;
-    const allAnswered = QUESTIONS.every((q) => answers[q.id]);
-    if (!allAnswered) {
-      wx.showToast({ title: '还有题目未作答', icon: 'none' });
-      return;
-    }
-    const score = calcScore(answers);
-    wx.setStorageSync('questionnaire', { answers, date: new Date().toISOString() });
-    this.setData({
-      score,
-      scoreLevel: getScoreLevel(score),
-      showQuestionnaire: false,
-    });
-    wx.showToast({ title: '问卷已完成' });
-  },
-
-  // ---------- 拍照 ----------
-  onStartDetect() {
-    if (!this.data.loggedIn) {
-      wx.showToast({ title: '请先登录', icon: 'none' });
+  onDetect() {
+    if (!this.data.currentMember) {
+      wx.showToast({ title: '请先添加孩子', icon: 'none' });
       return;
     }
     wx.navigateTo({ url: '/pages/camera/index' });
+  },
+
+  onRecords() {
+    wx.switchTab({ url: '/pages/message/index' });
+  },
+
+  onManage() {
+    wx.switchTab({ url: '/pages/my/index' });
+  },
+
+  onQuestionnaire() {
+    if (!this.data.currentMember) return;
+    wx.navigateTo({ url: `/pages/questionnaire/index?member_id=${this.data.currentMemberId}` });
   },
 });

@@ -1,0 +1,24 @@
+<nav title-text="健康问卷" />
+
+<view class="questionnaire">
+  <view class="q" wx:for="{{questions}}" wx:key="id" wx:for-item="question">
+    <view class="q__index">第 {{index + 1}} / {{questions.length}} 题</view>
+    <view class="q__title">{{question.title}}</view>
+    <view
+      wx:for="{{question.options}}"
+      wx:key="value"
+      wx:for-item="opt"
+      class="opt {{answers[question.id] === opt.value ? 'opt--active' : ''}}"
+      data-qid="{{question.id}}"
+      data-value="{{opt.value}}"
+      bindtap="onAnswer"
+    >
+      <view class="opt__radio">
+        <view class="opt__dot" wx:if="{{answers[question.id] === opt.value}}"></view>
+      </view>
+      <view class="opt__label">{{opt.label}}</view>
+    </view>
+  </view>
+
+  <view class="btn-primary" bindtap="submit">{{saved ? '更新问卷' : '提交问卷'}}</view>
+</view>
