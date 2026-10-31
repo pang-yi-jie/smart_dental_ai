@@ -1,59 +1,61 @@
-"""端到端冒烟测试：验证后端整条链路（登录→建病例→AI分析→历史→管理员→商品）。"""
+"""冒烟测试：家校医协同后端全流程。"""
 
+import sys
 from pathlib import Path
 
-from fastapi.testclient import TestClient
+import requests
 
-BASE = Path(__file__).resolve().parents[1]  # 项目根目录
-IMG = BASE / "yolov8-segment" / "test.jpg"
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-from app.main import app  # noqa: E402
+BASE = "http://127.0.0.1:8000"
+IMG = Path(r"D:\SmartDentalAI\yolov8-segment\test.jpg")
 
 
 def main() -> int:
-    with TestClient(app) as c:  # with 触发 lifespan：建表 + 预加载模型
-        print("== 健康检查 ==")
-        r = c.get("/health")
-        print(r.status_code, r.json())
+    # 1. 管理员登录 + 开通学校/校医/医生
+    r = requests.post(f"{BASE}/api/admin/login", json={"username": "13455774393", "password": "Pang0328"}, timeout=30)
+    print("管理员登录", r.status_code)
+    ah = {"Authorization": "Bearer " + r.json()["access_token"]}
 
-        print("\n== 微信登录（患者）==")
-        r = c.post("/api/auth/wechat", json={"phone": "13800138000", "openid": "test-openid"})
-        print(r.status_code, r.json())
-        token = r.json()["access_token"]
-        h = {"Authorization": f"Bearer {token}"}
+    r = requests.post(f"{BASE}/api/admin/schools", params={"name": "测试小学"}, headers=ah, timeout=30)
+    school_id = r.json()["id"]
+    print("建学校", r.status_code, school_id)
 
-        print("\n== 创建病例 + AI 分析（咬合面）==")
-        with IMG.open("rb") as f:
-            img_bytes = f.read()
-        r = c.post(
-            "/api/cases",
-            data={"view": "occlusal", "tooth_position": "16"},
-            files={"file": ("test.jpg", img_bytes, "image/jpeg")},
-            headers=h,
-        )
-        body = r.json()
-        print(r.status_code, "状态:", body.get("status"))
-        dets = (body.get("ai_result") or {}).get("detections", [])
-        print("检出数量:", len(dets))
+    requests.post(f"{BASE}/api/admin/school-users", params={"school_id": school_id, "name": "王校医", "phone": "13700000001", "password": "123456"}, headers=ah, timeout=30)
+    requests.post(f"{BASE}/api/admin/doctors", params={"name": "李医生", "phone": "13600000001", "password": "123456"}, headers=ah, timeout=30)
+    print("建校医 + 医生 OK")
 
-        print("\n== 我的历史 ==")
-        r = c.get("/api/my/cases", headers=h)
-        print(r.status_code, "病例数:", len(r.json()))
+    # 2. 家长登录 + 建档 + 问卷 + 评估
+    r = requests.post(f"{BASE}/api/auth/wechat", json={"phone": "13800138000"}, timeout=30)
+    fh = {"Authorization": "Bearer " + r.json()["access_token"]}
+    print("家长登录", r.status_code)
 
-        print("\n== 管理员登录 ==")
-        r = c.post("/api/admin/login", json={"username": "admin", "password": "admin123"})
-        print(r.status_code, r.json())
-        ah = {"Authorization": f"Bearer {r.json()['access_token']}"}
+    r = requests.post(f"{BASE}/api/members", json={"role": "child", "name": "小明", "birth": "2016-06", "gender": "male", "school_id": school_id}, headers=fh, timeout=30)
+    member_id = r.json()["id"]
+    print("建成员(孩子)", r.status_code, member_id)
 
-        print("\n== 新增商品（好物推荐）==")
-        r = c.post("/api/admin/products",
-                   json={"category": "device", "title": "口腔检测仪", "taobao_code": "￥test￥"},
-                   headers=ah)
-        print(r.status_code, r.json())
+    r = requests.post(f"{BASE}/api/members/{member_id}/questionnaire", json={"answers": {"brush": "2次", "sugar": "少"}}, headers=fh, timeout=30)
+    print("提交问卷", r.status_code)
 
-        print("\n== 商品列表 ==")
-        r = c.get("/api/products")
-        print(r.status_code, r.json())
+    with IMG.open("rb") as f:
+        img_bytes = f.read()
+    r = requests.post(f"{BASE}/api/assessments", data={"member_id": member_id, "view": "occlusal"}, files={"file": ("test.jpg", img_bytes, "image/jpeg")}, headers=fh, timeout=180)
+    a = r.json()
+    print("建评估", r.status_code, "状态", a.get("status"), "风险", a.get("risk_level"), "检出", len(a.get("detections") or []))
+
+    # 3. 学校登录 + 看学生
+    r = requests.post(f"{BASE}/api/school/login", json={"phone": "13700000001", "password": "123456"}, timeout=30)
+    sh = {"Authorization": "Bearer " + r.json()["access_token"]}
+    r = requests.get(f"{BASE}/api/school/students", headers=sh, timeout=30)
+    print("学校看学生", r.status_code, "数量", len(r.json()))
+
+    # 4. 医生登录 + 看所有人 + 确认
+    r = requests.post(f"{BASE}/api/doctor/login", json={"phone": "13600000001", "password": "123456"}, timeout=30)
+    dh = {"Authorization": "Bearer " + r.json()["access_token"]}
+    r = requests.get(f"{BASE}/api/doctor/assessments", headers=dh, timeout=30)
+    print("医生看评估", r.status_code, "数量", len(r.json()))
+    r = requests.post(f"{BASE}/api/doctor/assessments/{a['id']}/confirm", headers=dh, timeout=30)
+    print("医生确认诊断", r.status_code, r.json())
 
     print("\n[PASS] 冒烟测试完成")
     return 0

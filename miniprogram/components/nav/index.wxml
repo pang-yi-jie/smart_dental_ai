@@ -1,6 +1,0 @@
-<view class="nav">
-  <view class="nav__status" style="height: {{statusHeight}}px;"></view>
-  <view class="nav__bar">
-    <view class="nav__title">{{titleText}}</view>
-  </view>
-</view>

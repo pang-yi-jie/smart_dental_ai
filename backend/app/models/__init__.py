@@ -1,19 +1,25 @@
-"""统一导出所有 ORM 模型，确保 Base.metadata 能建全表。"""
+"""统一导出所有 ORM 模型。"""
 
-from app.models.case import AITask, Case, Diagnosis, Image, Report, ReviewLog
-from app.models.clinic import Clinic, ClinicUser
-from app.models.product import Product
-from app.models.user import User
+from app.models.assessment import Assessment, Feedback, Image, Questionnaire, Result, Task
+from app.models.content import Product, Video
+from app.models.family import Account, FamilyMember
+from app.models.org import Doctor, School, SchoolUser
+from app.models.system import AITask, ReviewLog
 
 __all__ = [
-    "User",
-    "Clinic",
-    "ClinicUser",
-    "Case",
+    "Account",
+    "FamilyMember",
+    "School",
+    "SchoolUser",
+    "Doctor",
+    "Assessment",
+    "Questionnaire",
     "Image",
-    "Diagnosis",
-    "Report",
+    "Result",
+    "Task",
+    "Feedback",
+    "Video",
+    "Product",
     "ReviewLog",
     "AITask",
-    "Product",
 ]

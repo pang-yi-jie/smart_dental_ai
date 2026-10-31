@@ -8,9 +8,9 @@ from fastapi import UploadFile
 from app.config import settings
 
 
-def save_upload(file: UploadFile, case_id: int, kind: str = "raw") -> Path:
-    """把上传文件保存到 data/images/{case_id}/{kind}.jpg，返回绝对路径。"""
-    folder = settings.data_dir / "images" / str(case_id)
+def save_upload(file: UploadFile, assessment_id: int, kind: str = "raw") -> Path:
+    """保存上传文件到 data/images/{assessment_id}/{kind}.jpg。"""
+    folder = settings.data_dir / "images" / str(assessment_id)
     folder.mkdir(parents=True, exist_ok=True)
     ext = Path(file.filename or "img.jpg").suffix or ".jpg"
     path = folder / f"{kind}{ext}"
@@ -20,7 +20,7 @@ def save_upload(file: UploadFile, case_id: int, kind: str = "raw") -> Path:
 
 
 def rel_to_data(path: Path) -> str:
-    """转成相对 data 目录的路径（存库用，便于跨机迁移）。"""
+    """转成相对 data 目录的路径（存库用）。"""
     try:
         return str(Path(path).resolve().relative_to(settings.data_dir.resolve()))
     except ValueError:

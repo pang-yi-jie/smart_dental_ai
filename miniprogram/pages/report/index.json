@@ -1,7 +1,0 @@
-{
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "t-loading": "tdesign-miniprogram/loading/loading",
-    "nav": "/components/nav"
-  }
-}

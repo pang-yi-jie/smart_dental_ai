@@ -1,16 +1,17 @@
-"""认证相关请求/响应模型。"""
+"""认证相关请求模型。"""
 
 from pydantic import BaseModel
 
 
 class WechatLoginRequest(BaseModel):
-    """微信登录。生产环境用 code 换 openid/手机号；MVP 直接传 phone。"""
+    """家长微信登录。"""
     code: str | None = None
     phone: str
     openid: str | None = None
 
 
-class ClinicLoginRequest(BaseModel):
+class PasswordLoginRequest(BaseModel):
+    """学校/医生账号密码登录。"""
     phone: str
     password: str
 
@@ -18,9 +19,3 @@ class ClinicLoginRequest(BaseModel):
 class AdminLoginRequest(BaseModel):
     username: str
     password: str
-
-
-class TokenResponse(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
-    role: str

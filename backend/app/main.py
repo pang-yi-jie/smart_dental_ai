@@ -14,7 +14,7 @@ from fastapi.staticfiles import StaticFiles
 from app import models  # noqa: F401  确保所有 ORM 模型注册到 Base
 from app.config import settings
 from app.database import Base, engine
-from app.routers import admin, auth, cases, clinic, health, products
+from app.routers import admin, auth, content, doctor, family, health, school
 from app.services.ai_service import ai_service
 
 
@@ -45,7 +45,8 @@ def root():
 
 app.include_router(health.router)
 app.include_router(auth.router)
-app.include_router(cases.router)
-app.include_router(clinic.router)
-app.include_router(products.router)
+app.include_router(family.router)
+app.include_router(school.router)
+app.include_router(doctor.router)
+app.include_router(content.router)
 app.include_router(admin.router)
