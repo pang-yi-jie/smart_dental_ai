@@ -1,4 +1,4 @@
-# Logs
+﻿# Logs
 logs
 *.log
 npm-debug.log*
@@ -104,8 +104,8 @@ dist
 .tern-port
 
 # Wechat miniprogram
-miniprogram_npm
-
+# miniprogram_npm （已入库，保障可直接在开发者工具打开）
 .idea
 
 project.private.config.json
+
