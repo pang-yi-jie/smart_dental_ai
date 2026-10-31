@@ -1,3 +1,5 @@
+@import '/variable.less';
+
 .camera-page {
   min-height: 100vh;
   background: #000;
@@ -43,7 +45,7 @@
     position: absolute;
     bottom: 60rpx;
     color: #fff;
-    font-size: 26rpx;
+    font-size: @font-aux;
     background: rgba(0, 0, 0, 0.45);
     padding: 12rpx 28rpx;
     border-radius: 30rpx;
@@ -52,20 +54,20 @@
 
 /* 控制面板 */
 .panel {
-  background: #fff;
-  padding: 32rpx 40rpx;
+  background: @bg-white;
+  padding: 32rpx 32rpx;
 
   &__label {
-    font-size: 26rpx;
-    color: #888;
+    font-size: @font-aux;
+    color: @text-secondary;
     margin-bottom: 16rpx;
   }
 }
 
 .seg {
   display: flex;
-  background: #f5f6f8;
-  border-radius: 16rpx;
+  background: @bg-secondary;
+  border-radius: @radius-btn;
   padding: 6rpx;
 
   &__item {
@@ -73,13 +75,13 @@
     height: 76rpx;
     line-height: 76rpx;
     text-align: center;
-    font-size: 28rpx;
-    color: #666;
+    font-size: @font-body-sm;
+    color: @text-secondary;
     border-radius: 12rpx;
 
     &--active {
-      background: #fff;
-      color: #0052d9;
+      background: @bg-white;
+      color: @brand-color;
       font-weight: 600;
       box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
     }
@@ -87,25 +89,25 @@
 }
 
 .tooth-input {
-  height: 88rpx;
-  background: #f5f6f8;
-  border-radius: 16rpx;
+  height: @btn-height;
+  background: @bg-secondary;
+  border-radius: @radius-btn;
   padding: 0 28rpx;
-  font-size: 30rpx;
+  font-size: @font-body;
 }
 
 /* 操作区 */
 .actions {
-  background: #fff;
-  padding: 40rpx 40rpx 80rpx;
+  background: @bg-white;
+  padding: 40rpx 40rpx calc(60rpx + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   align-items: center;
 
   &__tip {
     margin-top: 20rpx;
-    font-size: 24rpx;
-    color: #999;
+    font-size: @font-note;
+    color: @text-tertiary;
   }
 }
 
@@ -113,7 +115,7 @@
   width: 140rpx;
   height: 140rpx;
   border-radius: 50%;
-  border: 6rpx solid #e6e9ef;
+  border: 6rpx solid @divider-color;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,7 +124,7 @@
     width: 108rpx;
     height: 108rpx;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0052d9, #4d8dff);
+    background: @brand-color;
   }
 }
 
@@ -135,16 +137,20 @@
 .btn-primary,
 .btn-ghost {
   flex: 1;
-  height: 96rpx;
-  line-height: 96rpx;
+  height: @btn-height;
+  line-height: @btn-height;
   text-align: center;
-  border-radius: 16rpx;
-  font-size: 30rpx;
+  border-radius: @radius-btn;
+  font-size: @font-body;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #0052d9, #4d8dff);
+  background: @brand-color;
   color: #fff;
+
+  &:active {
+    opacity: 0.7;
+  }
 
   &--disabled {
     opacity: 0.6;
@@ -152,6 +158,6 @@
 }
 
 .btn-ghost {
-  background: #f5f6f8;
-  color: #666;
+  background: @bg-secondary;
+  color: @text-secondary;
 }

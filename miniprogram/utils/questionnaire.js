@@ -59,9 +59,9 @@ export function calcScore(answers) {
   return Math.round(((total - min) / (max - min)) * 100);
 }
 
-/** 根据评分给出口腔健康提示 */
+/** 根据评分给出口腔健康提示（语义色对齐 WeUI） */
 export function getScoreLevel(score) {
-  if (score >= 80) return { label: '习惯良好', color: '#00a870', tip: '保持得很好，继续坚持定期检查。' };
-  if (score >= 55) return { label: '需要改善', color: '#ff8f1f', tip: '建议加强刷牙时长与牙线使用。' };
-  return { label: '需要重视', color: '#d54941', tip: '存在较高口腔风险，建议尽快做专业检查。' };
+  if (score >= 80) return { label: '习惯良好', color: '#07C160', tip: '保持得很好，继续坚持定期检查。' };
+  if (score >= 55) return { label: '需要改善', color: '#FF9500', tip: '建议加强刷牙时长与牙线使用。' };
+  return { label: '需要重视', color: '#FA5151', tip: '存在较高口腔风险，建议尽快做专业检查。' };
 }

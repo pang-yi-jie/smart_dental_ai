@@ -1,6 +1,11 @@
 Component({
   data: {
     value: '',
+    list: [
+      { icon: 'home', value: 'home', label: '首页' },
+      { icon: 'shop', value: 'message', label: '好物' },
+      { icon: 'user', value: 'my', label: '我的' },
+    ],
   },
 
   lifetimes: {
@@ -16,8 +21,8 @@ Component({
   },
 
   methods: {
-    handleChange(e) {
-      const { value } = e.detail;
+    onTap(e) {
+      const { value } = e.currentTarget.dataset;
       wx.switchTab({ url: `/pages/${value}/index` });
     },
   },

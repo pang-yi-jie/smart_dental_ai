@@ -1,83 +1,24 @@
-﻿{
-    "description":  "项目配置文件，详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
-    "packOptions":  {
-                        "ignore":  [
-
-                                   ],
-                        "include":  [
-
-                                    ]
-                    },
-    "setting":  {
-                    "bundle":  false,
-                    "userConfirmedBundleSwitch":  false,
-                    "urlCheck":  true,
-                    "scopeDataCheck":  false,
-                    "coverView":  true,
-                    "es6":  true,
-                    "postcss":  true,
-                    "compileHotReLoad":  false,
-                    "lazyloadPlaceholderEnable":  false,
-                    "preloadBackgroundData":  false,
-                    "minified":  true,
-                    "autoAudits":  false,
-                    "newFeature":  false,
-                    "uglifyFileName":  false,
-                    "uploadWithSourceMap":  true,
-                    "useIsolateContext":  true,
-                    "nodeModules":  false,
-                    "enhance":  true,
-                    "useMultiFrameRuntime":  true,
-                    "useApiHook":  true,
-                    "useApiHostProcess":  true,
-                    "showShadowRootInWxmlPanel":  true,
-                    "packNpmManually":  false,
-                    "enableEngineNative":  false,
-                    "packNpmRelationList":  [
-
-                                            ],
-                    "minifyWXSS":  true,
-                    "showES6CompileOption":  false,
-                    "minifyWXML":  true,
-                    "useStaticServer":  true,
-                    "checkInvalidKey":  true,
-                    "babelSetting":  {
-                                         "ignore":  [
-
-                                                    ],
-                                         "disablePlugins":  [
-
-                                                            ],
-                                         "outputPath":  ""
-                                     },
-                    "disableUseStrict":  false,
-                    "useCompilerPlugins":  [
-                                               "less"
-                                           ],
-                    "condition":  false,
-                    "ignoreUploadUnusedFiles":  true,
-                    "localPlugins":  false,
-                    "compileWorklet":  false,
-                    "lessSetting":  {
-                                        "commonUseFilePath":  "app.less"
-                                    }
-                },
-    "compileType":  "miniprogram",
-    "libVersion":  "3.7.8",
-    "appid":  "wx8ce57f6503aeadd8",
-    "projectname":  "AIOfDental",
-    "condition":  {
-                      "miniprogram":  {
-                                          "list":  [
-
-                                                   ]
-                                      }
-                  },
-    "editorSetting":  {
-                          "tabIndent":  "insertSpaces",
-                          "tabSize":  2
-                      },
-    "simulatorPluginLibVersion":  {
-
-                                  }
+{
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "uglifyFileName": false,
+    "enhance": true,
+    "packNpmRelationList": [],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useCompilerPlugins": false
+  },
+  "compileType": "miniprogram",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "appid": "wx8ce57f6503aeadd8",
+  "editorSetting": {}
 }

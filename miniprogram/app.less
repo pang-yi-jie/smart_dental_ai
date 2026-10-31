@@ -1,9 +1,51 @@
-/**app.wxss**/
+/** 全局样式 */
+@import '/variable.less';
+
 page {
-  background-color: #f3f3f3;
+  background-color: @bg-color;
+  color: @text-primary;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica,
+    "Segoe UI", Arial, Roboto, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  font-size: @font-body;
+  line-height: 1.6;
 }
 
-.page {
-  height: 100vh;
-  background-color: #fff;
+/* 通用按钮（WeUI 规范） */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: @btn-height;
+  background: @brand-color;
+  color: #fff;
+  font-size: @font-body;
+  border-radius: @radius-btn;
+  font-weight: 500;
+}
+
+.btn-primary:active {
+  opacity: 0.7;
+}
+
+.btn-default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: @btn-height;
+  background: @bg-secondary;
+  color: @text-primary;
+  font-size: @font-body;
+  border-radius: @radius-btn;
+}
+
+.btn-default:active {
+  background: @tap-bg;
+}
+
+/* 卡片 */
+.card {
+  background: @bg-white;
+  border-radius: @radius-card;
+  box-shadow: @shadow-card;
 }

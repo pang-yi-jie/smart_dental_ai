@@ -3,7 +3,7 @@
 <view class="my">
   <view class="profile">
     <view class="profile__avatar">
-      <t-icon name="user" size="64rpx" color="#0052d9" />
+      <t-icon name="user" size="64rpx" color="#07C160" />
     </view>
     <view class="profile__info">
       <view class="profile__name">{{loggedIn ? phone : '未登录'}}</view>
