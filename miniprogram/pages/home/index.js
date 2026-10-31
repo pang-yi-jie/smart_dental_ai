@@ -1,4 +1,4 @@
-import { isLoggedIn, loginByPhone, getMembers, getAssessments } from '~/api/index';
+﻿import { isLoggedIn, loginByPhone, getMembers, getAssessments } from '~/api/index';
 
 const ROLE_TEXT = { father: '父亲', mother: '母亲', child: '孩子', self: '自己' };
 const RISK_TEXT = { low: '低风险', mid: '中风险', high: '高风险' };
@@ -42,7 +42,7 @@ Page({
     getAssessments(memberId).then((list) => {
       const latest = list && list[0];
       const risk = latest && latest.risk_level;
-      const color = { low: '#07C160', mid: '#FF9500', high: '#FA5151' }[risk] || '#999999';
+      const color = { low: '#15816C', mid: '#C17A26', high: '#C55A49' }[risk] || '#999999';
       this.setData({
         riskLevel: risk,
         riskText: risk ? RISK_TEXT[risk] : '暂无检测',

@@ -1,4 +1,4 @@
-<view class="home">
+﻿<view class="home">
   <!-- 品牌 Hero + 成员切换 -->
   <view class="hero">
     <view class="hero__title">守护每一次微笑</view>
@@ -53,7 +53,7 @@
       <view class="grid">
         <view class="grid__item" bindtap="onDetect">
           <view class="grid__icon grid__icon--green">
-            <t-icon name="camera" size="56rpx" color="#07C160" />
+            <t-icon name="camera" size="56rpx" color="#15816C" />
           </view>
           <view class="grid__label">拍照筛查</view>
           <view class="grid__desc">拍摄口腔照片</view>
@@ -67,7 +67,7 @@
         </view>
         <view class="grid__item" bindtap="onRecords">
           <view class="grid__icon grid__icon--orange">
-            <t-icon name="history" size="56rpx" color="#FF9500" />
+            <t-icon name="history" size="56rpx" color="#C17A26" />
           </view>
           <view class="grid__label">检测记录</view>
           <view class="grid__desc">历史报告</view>
@@ -77,7 +77,7 @@
       <!-- 护牙计划入口 -->
       <view class="card cell" hover-class="cell--hover" bindtap="onRecords">
         <view class="cell__icon cell__icon--green">
-          <t-icon name="check-circle" size="44rpx" color="#07C160" />
+          <t-icon name="check-circle" size="44rpx" color="#15816C" />
         </view>
         <view class="cell__body">
           <view class="cell__title">护牙计划</view>

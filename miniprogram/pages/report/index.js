@@ -1,8 +1,8 @@
-import { getAssessment, getProducts, getVideos } from '~/api/index';
+﻿import { getAssessment, getProducts, getVideos } from '~/api/index';
 import { BASE_URL } from '~/api/request';
 
 const RISK_TEXT = { low: '低风险', mid: '中风险', high: '高风险' };
-const RISK_COLOR = { low: '#07C160', mid: '#FF9500', high: '#FA5151' };
+const RISK_COLOR = { low: '#15816C', mid: '#C17A26', high: '#C55A49' };
 
 Page({
   data: {

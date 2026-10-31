@@ -1,4 +1,4 @@
-<view class="tab-bar">
+﻿<view class="tab-bar">
   <view
     wx:for="{{list}}"
     wx:key="value"
@@ -6,7 +6,7 @@
     data-value="{{item.value}}"
     bindtap="onTap"
   >
-    <t-icon name="{{item.icon}}" size="48rpx" color="{{value === item.value ? '#07C160' : '#999999'}}" />
+    <t-icon name="{{item.icon}}" size="48rpx" color="{{value === item.value ? '#15816C' : '#999999'}}" />
     <view class="tab-bar__text">{{item.label}}</view>
   </view>
 </view>

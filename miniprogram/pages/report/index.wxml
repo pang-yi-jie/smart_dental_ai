@@ -1,4 +1,4 @@
-<nav title-text="评估报告" />
+﻿<nav title-text="评估报告" />
 
 <view class="report" wx:if="{{assessment}}">
   <!-- 风险等级卡 -->
@@ -38,7 +38,7 @@
     <view class="card__title">推荐科普</view>
     <view class="video" wx:for="{{videos}}" wx:key="id">
       <view class="video__title">{{item.title}}</view>
-      <t-icon name="play-circle" size="40rpx" color="#07C160" />
+      <t-icon name="play-circle" size="40rpx" color="#15816C" />
     </view>
   </view>
 
