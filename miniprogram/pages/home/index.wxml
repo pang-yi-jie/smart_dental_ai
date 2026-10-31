@@ -1,0 +1,101 @@
+<nav title-text="口腔AI检测" />
+
+<view class="home">
+  <!-- 品牌 Hero -->
+  <view class="hero">
+    <view class="hero__title">守护每一次微笑</view>
+    <view class="hero__sub">AI 智能口腔检测 · 随时了解牙齿健康</view>
+
+    <!-- 健康评分 -->
+    <view class="score" wx:if="{{score !== null}}">
+      <view class="score__ring">
+        <view class="score__num">{{score}}</view>
+        <view class="score__unit">分</view>
+      </view>
+      <view class="score__info">
+        <view class="score__level" style="color: {{scoreLevel.color}}">{{scoreLevel.label}}</view>
+        <view class="score__tip">{{scoreLevel.tip}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主体 -->
+  <view class="body">
+    <!-- 未登录 -->
+    <view class="card login" wx:if="{{!loggedIn}}">
+      <view class="login__title">登录后开始检测</view>
+      <view class="login__desc">输入手机号即可使用，无需注册</view>
+      <view class="login__row">
+        <input class="login__input" type="number" maxlength="11" placeholder="请输入手机号"
+               value="{{phone}}" bindinput="onPhoneInput" />
+        <view class="login__btn" bindtap="onLogin">登录</view>
+      </view>
+    </view>
+
+    <!-- 已登录 -->
+    <block wx:else>
+      <!-- 问卷入口 -->
+      <view class="card cell" hover-class="cell--hover" bindtap="onOpenQuestionnaire">
+        <view class="cell__icon cell__icon--green">
+          <t-icon name="edit" size="44rpx" color="#07C160" />
+        </view>
+        <view class="cell__body">
+          <view class="cell__title">口腔习惯问卷</view>
+          <view class="cell__desc">{{score !== null ? '已完成，可重新评估' : '5 个问题，了解您的口腔风险'}}</view>
+        </view>
+        <t-icon name="chevron-right" size="36rpx" color="#CCCCCC" />
+      </view>
+
+      <!-- 拍照入口 -->
+      <view class="card cell" hover-class="cell--hover" bindtap="onStartDetect">
+        <view class="cell__icon cell__icon--blue">
+          <t-icon name="camera" size="44rpx" color="#10AEFF" />
+        </view>
+        <view class="cell__body">
+          <view class="cell__title">拍照检测</view>
+          <view class="cell__desc">对准牙齿拍摄，AI 自动识别牙位</view>
+        </view>
+        <t-icon name="chevron-right" size="36rpx" color="#CCCCCC" />
+      </view>
+    </block>
+  </view>
+
+  <!-- 问卷弹层 -->
+  <view class="mask" wx:if="{{showQuestionnaire}}" bindtap="onCloseQuestionnaire"></view>
+  <view class="sheet" wx:if="{{showQuestionnaire}}">
+    <view class="sheet__head">
+      <view class="sheet__title">口腔习惯问卷</view>
+      <t-icon name="close" size="44rpx" color="#999999" bindtap="onCloseQuestionnaire" />
+    </view>
+
+    <view class="progress">
+      <view class="progress__bar" style="width: {{progress}}%"></view>
+    </view>
+
+    <view class="q">
+      <view class="q__index">第 {{currentIndex + 1}} / {{questions.length}} 题</view>
+      <view class="q__title">{{questions[currentIndex].title}}</view>
+      <view
+        wx:for="{{questions[currentIndex].options}}"
+        wx:key="value"
+        class="opt {{answers[questions[currentIndex].id] === item.value ? 'opt--active' : ''}}"
+        hover-class="opt--hover"
+        data-qid="{{questions[currentIndex].id}}"
+        data-value="{{item.value}}"
+        bindtap="onAnswer"
+      >
+        <view class="opt__radio">
+          <view class="opt__dot" wx:if="{{answers[questions[currentIndex].id] === item.value}}"></view>
+        </view>
+        <view class="opt__label">{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="sheet__btns">
+      <view class="btn-default sheet__btn" wx:if="{{currentIndex > 0}}" bindtap="onPrev">上一题</view>
+      <view class="btn-primary sheet__btn sheet__btn--flex" bindtap="onNext">
+        {{currentIndex === questions.length - 1 ? '完成' : '下一题'}}
+      </view>
+    </view>
+  </view>
+</view>

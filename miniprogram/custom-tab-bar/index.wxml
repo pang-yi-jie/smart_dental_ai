@@ -1,0 +1,12 @@
+<view class="tab-bar">
+  <view
+    wx:for="{{list}}"
+    wx:key="value"
+    class="tab-bar__item {{value === item.value ? 'tab-bar__item--active' : ''}}"
+    data-value="{{item.value}}"
+    bindtap="onTap"
+  >
+    <t-icon name="{{item.icon}}" size="48rpx" color="{{value === item.value ? '#07C160' : '#999999'}}" />
+    <view class="tab-bar__text">{{item.label}}</view>
+  </view>
+</view>

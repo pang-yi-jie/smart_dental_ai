@@ -1,4 +1,4 @@
-﻿# ===== 运行时数据 / 生成产物 =====
+# ===== 运行时数据 / 生成产物 =====
 data/
 outputs/
 samples/
@@ -22,7 +22,7 @@ venv/
 
 # ===== Node / 小程序 =====
 node_modules/
-miniprogram/miniprogram_npm/
+# miniprogram_npm 需入库（组件库构建产物，避免再次丢失）
 
 # ===== 临时 / 日志 / 系统 =====
 *.log
