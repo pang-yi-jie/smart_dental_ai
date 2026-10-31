@@ -28,3 +28,4 @@ miniprogram/miniprogram_npm/
 *.log
 .DS_Store
 Thumbs.db
+miniprogram_template/
