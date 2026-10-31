@@ -1,0 +1,10 @@
+.camera { width: 100%; height: 800rpx; }
+.preview { width: 100%; height: 800rpx; background: #000; }
+.controls { padding: 24rpx; }
+.row { display: flex; align-items: center; margin-bottom: 24rpx; }
+.label { width: 120rpx; color: #666; }
+.radios { display: flex; }
+.radio { margin-right: 32rpx; }
+.input { flex: 1; border: 1rpx solid #ddd; border-radius: 12rpx; padding: 16rpx; }
+.btns { display: flex; gap: 24rpx; }
+.btns button { flex: 1; }

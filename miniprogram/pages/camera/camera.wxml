@@ -1,0 +1,24 @@
+<view class="page">
+  <camera class="camera" device-position="back" flash="auto" wx:if="{{!img}}"></camera>
+  <image class="preview" src="{{img}}" mode="aspectFit" wx:else></image>
+
+  <view class="controls">
+    <view class="row">
+      <text class="label">视角</text>
+      <radio-group class="radios" bindchange="onViewChange">
+        <label class="radio"><radio value="occlusal" checked="{{view==='occlusal'}}" />咬合面</label>
+        <label class="radio"><radio value="buccal" checked="{{view==='buccal'}}" />唇颊面</label>
+      </radio-group>
+    </view>
+
+    <view class="row">
+      <text class="label">牙位</text>
+      <input class="input" placeholder="FDI 编号，如 16" value="{{tooth}}" bindinput="onToothInput" />
+    </view>
+
+    <view class="btns">
+      <button class="btn-primary" bindtap="takePhoto">{{img ? '重拍' : '拍照'}}</button>
+      <button class="btn-primary" bindtap="upload" disabled="{{uploading}}">上传分析</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,14 @@
+<view class="page">
+  <view wx:if="{{!list.length}}" class="empty">暂无检测记录</view>
+  <view class="card item" wx:for="{{list}}" wx:key="id"
+        data-id="{{item.id}}" bindtap="open">
+    <view class="left">
+      <view class="tooth">牙位 {{item.tooth_position || '未填'}}</view>
+      <view class="view">{{item.view === 'occlusal' ? '咬合面' : '唇颊面'}}</view>
+    </view>
+    <view class="right">
+      <text class="status">{{statusText(item.status)}}</text>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+</view>

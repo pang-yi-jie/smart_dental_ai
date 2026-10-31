@@ -1,0 +1,41 @@
+# ============================================================
+# 智能牙科 AI 检测 —— 业务后端依赖（不含 PyTorch，单独安装）
+# Python 3.11
+# 安装: pip install -r requirements.txt
+# ============================================================
+
+# ---------- Web / API ----------
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.8
+pydantic-settings>=2.4
+python-multipart>=0.0.9
+httpx>=0.27
+python-dotenv>=1.0
+aiofiles>=24.1
+
+# ---------- 数据库 ----------
+sqlalchemy>=2.0
+pymysql>=1.1
+alembic>=1.13
+
+# ---------- 缓存 / 异步队列 ----------
+redis>=5.0
+celery>=5.4
+
+# ---------- 认证 / 安全 ----------
+pyjwt>=2.8
+passlib>=1.7
+bcrypt==4.0.1
+
+# ---------- 阿里云 OSS ----------
+oss2>=2.18
+
+# ---------- 图像处理 ----------
+pillow>=10.0
+numpy>=1.26
+opencv-python-headless>=4.10
+
+# ---------- 工具 ----------
+loguru>=0.7
+tenacity>=8.5

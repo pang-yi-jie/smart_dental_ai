@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>医生后台 · 登录</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+  <div class="login-box">
+    <h1>口腔AI 医生后台</h1>
+    <p class="sub">诊所病例复核与批阅</p>
+    <input id="phone" type="text" placeholder="手机号" autocomplete="username">
+    <input id="password" type="password" placeholder="密码" autocomplete="current-password">
+    <button class="btn primary" onclick="doLogin()">登 录</button>
+    <div id="err" class="err"></div>
+  </div>
+  <script src="login.js"></script>
+</body>
+</html>

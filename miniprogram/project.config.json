@@ -1,0 +1,13 @@
+{
+  "description": "智能牙科 AI 检测小程序",
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "projectname": "SmartDentalAI",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "postcss": true,
+    "minified": true
+  },
+  "libVersion": "3.0.0"
+}

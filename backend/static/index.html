@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>医生后台 · 病例批阅</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <span class="logo">口腔AI 医生后台</span>
+    <span class="doctor" id="doctorName"></span>
+    <button class="btn ghost" onclick="logout()">退出</button>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="pending" onclick="switchTab('pending')">待审核</button>
+    <button class="tab" data-tab="finalized" onclick="switchTab('finalized')">已定稿</button>
+    <button class="tab" data-tab="rejected" onclick="switchTab('rejected')">已驳回</button>
+    <button class="tab" data-tab="all" onclick="switchTab('all')">全部</button>
+  </div>
+
+  <div class="layout">
+    <aside class="list" id="caseList">
+      <div class="empty">加载中...</div>
+    </aside>
+    <main class="detail" id="detail">
+      <div class="empty">← 选择左侧病例查看详情</div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
